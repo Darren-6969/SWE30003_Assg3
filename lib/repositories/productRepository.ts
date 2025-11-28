@@ -22,4 +22,11 @@ export const productRepository = {
   async findByIds(ids: bigint[]) {
     return prisma.product.findMany({ where: { productId: { in: ids } } });
   },
+
+  async decrementStock(productId: bigint, quantity: number) {
+    return prisma.product.update({
+      where: { productId },
+      data: { stockLevel: { decrement: quantity } },
+    });
+  },
 };
