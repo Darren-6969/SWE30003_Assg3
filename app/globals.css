@@ -1,0 +1,43 @@
+:root {
+  --background: #f6f8fb;
+  --background-strong: #edf0f6;
+  --surface: rgba(255, 255, 255, 0.9);
+  --surface-strong: #ffffff;
+  --ink: #0b1220;
+  --muted: #5c6472;
+  --border: rgba(12, 19, 44, 0.08);
+  --accent: #0a84ff;
+  --accent-strong: #0f7bff;
+  --shadow: 0 24px 60px rgba(11, 18, 32, 0.12);
+  --frost: rgba(255, 255, 255, 0.78);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 10% 10%, #e9f1ff 0, transparent 32%),
+    radial-gradient(circle at 70% 20%, #e6ecff 0, transparent 38%),
+    linear-gradient(180deg, #f9fbff 0, #f4f6fb 40%, #f3f5f8 100%);
+  font-family: var(--font-body), "Plus Jakarta Sans", "DM Sans", "Helvetica Neue", sans-serif;
+  line-height: 1.5;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

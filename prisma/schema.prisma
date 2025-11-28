@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  CANCELLED
+}
+
+enum ProductType {
+  TICKET
+  MERCH
+}
+
+enum TicketStatus {
+  ACTIVE
+  CANCELLED
+  RESCHEDULED
+}
+
+model User {
+  userId       BigInt   @id @default(autoincrement()) @map("user_id")
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  fullName     String   @map("full_name")
+  orders       Order[]
+  tickets      Ticket[]
+
+  @@map("users")
+}
+
+model Park {
+  parkId        BigInt   @id @default(autoincrement()) @map("park_id")
+  name          String
+  location      String
+  status        String
+  dailyCapacity Int      @map("daily_capacity")
+  products      Product[]
+  tickets       Ticket[]
+
+  @@map("parks")
+}
+
+model Product {
+  productId   BigInt      @id @default(autoincrement()) @map("product_id")
+  productName String      @map("product_name")
+  unitPrice   Decimal     @map("unit_price")
+  type        ProductType
+  parkId      BigInt?     @map("park_id")
+  park        Park?       @relation(fields: [parkId], references: [parkId])
+  orderItems  OrderItem[]
+
+  @@map("products")
+}
+
+model Order {
+  orderId     BigInt      @id @default(autoincrement()) @map("order_id")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  totalAmount Decimal     @map("total_amount")
+  status      OrderStatus @default(PENDING)
+  userId      BigInt      @map("user_id")
+  user        User        @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  items       OrderItem[]
+  tickets     Ticket[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  itemId      BigInt   @id @default(autoincrement()) @map("item_id")
+  quantity    Int
+  lockedPrice Decimal  @map("locked_price")
+  orderId     BigInt   @map("order_id")
+  productId   BigInt   @map("product_id")
+  order       Order    @relation(fields: [orderId], references: [orderId], onDelete: Cascade)
+  product     Product  @relation(fields: [productId], references: [productId])
+
+  @@map("order_items")
+}
+
+model Ticket {
+  ticketId  BigInt       @id @default(autoincrement()) @map("ticket_id")
+  status    TicketStatus @default(ACTIVE)
+  visitDate DateTime     @map("visit_date")
+  qrCode    String?      @map("qr_code")
+  userId    BigInt       @map("user_id")
+  orderId   BigInt       @map("order_id")
+  parkId    BigInt       @map("park_id")
+
+  user  User  @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  order Order @relation(fields: [orderId], references: [orderId], onDelete: Cascade)
+  park  Park  @relation(fields: [parkId], references: [parkId])
+
+  @@map("tickets")
+}
