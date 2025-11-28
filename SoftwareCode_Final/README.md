@@ -9,4 +9,6 @@ npm install
 npx prisma db push
 npx prisma db seed
 npm run dev
+
+Note: The project uses a JavaScript seed script at `prisma/seed.js` (referenced by `package.json#prisma.seed`) so `npx prisma db seed` runs across environments without requiring `ts-node` ESM loaders.
 ```

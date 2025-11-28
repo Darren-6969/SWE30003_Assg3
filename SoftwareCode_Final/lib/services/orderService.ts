@@ -1,4 +1,4 @@
-import { Prisma, type OrderStatus } from "@prisma/client";
+import { Prisma, TicketStatus, type OrderStatus } from "@prisma/client";
 import { calculateCartTotal, buildReceipt } from "../domain/domainHelpers";
 import type { CartItemInput, TransactionReceipt, PaymentMethod } from "../domain/domainTypes";
 import { paymentStrategyFactory } from "../factory/paymentStrategyFactory";
@@ -124,14 +124,7 @@ export const orderService = {
         include: { items: { include: { product: true } } },
       });
 
-      const ticketCreates: {
-        status: string;
-        visitDate: Date;
-        qrCode: string;
-        userId: bigint;
-        orderId: bigint;
-        parkId: bigint;
-      }[] = [];
+      const ticketCreates: Prisma.TicketCreateManyInput[] = [];
 
       for (const item of orderItems) {
         if (item.productType === "TICKET") {
@@ -140,7 +133,7 @@ export const orderService = {
           }
           for (let i = 0; i < item.quantity; i += 1) {
             ticketCreates.push({
-              status: "ACTIVE",
+              status: TicketStatus.ACTIVE,
               visitDate: new Date(),
               qrCode: `ORDER-${order.orderId}-${item.productId}-${i + 1}`,
               userId,

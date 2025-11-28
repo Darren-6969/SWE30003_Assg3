@@ -1,8 +1,8 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient, ProductType } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const parks = [
+const parks: Prisma.ParkCreateManyInput[] = [
   { 
     parkId: BigInt(1), 
     name: "Santubong National Park", 
@@ -46,40 +46,40 @@ const parks = [
   { parkId: BigInt(23), name: "Kuala Selangor Nature Park", dailyCapacity: 120, location: "Selangor", status: "OPEN" }
 ];
 
-const products = [
+const products: Prisma.ProductCreateManyInput[] = [
   { 
     productId: BigInt(1), 
     productName: "Santubong Adult Ticket", 
     unitPrice: new Prisma.Decimal(25.00), 
-    type: "TICKET", 
+    type: ProductType.TICKET, 
     parkId: BigInt(1) 
   },
   { 
     productId: BigInt(2), 
     productName: "Bako Adult Ticket", 
     unitPrice: new Prisma.Decimal(30.00), 
-    type: "TICKET", 
+    type: ProductType.TICKET, 
     parkId: BigInt(2) 
   },
   { 
     productId: BigInt(3), 
     productName: "Mulu Cave Pass", 
     unitPrice: new Prisma.Decimal(50.00), 
-    type: "TICKET", 
+    type: ProductType.TICKET, 
     parkId: BigInt(3) 
   },
   { 
     productId: BigInt(4), 
     productName: "Rainforest T-Shirt", 
     unitPrice: new Prisma.Decimal(55.00), 
-    type: "MERCH", 
+    type: ProductType.MERCH, 
     parkId: null 
   },
   { 
     productId: BigInt(5), 
     productName: "Wildlife Sticker Pack", 
     unitPrice: new Prisma.Decimal(8.00), 
-    type: "MERCH", 
+    type: ProductType.MERCH, 
     parkId: null 
   },
 ];
